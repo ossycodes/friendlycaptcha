@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/ossycodes/friendlycaptcha.svg?style=flat-square)](https://packagist.org/packages/ossycodes/friendlycaptcha)
 ![GitHub Actions](https://github.com/ossycodes/friendlycaptcha/actions/workflows/main.yml/badge.svg)
 
-This packages helps in setting up and validating FriendlyCaptcha widget and response in your PHP or Laravel application
+This packages helps in setting up and validating FriendlyCaptcha widget and response in your Laravel applications
 
 ## Installation
 
