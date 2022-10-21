@@ -69,8 +69,8 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
      */
     public function bootMacro()
     {
-        Rule::macro('turnstile', function () {
-            return app(Turnstile::class);
+        Rule::macro('friendlycaptcha', function () {
+            return app(FriendlyCaptcha::class);
         });
     }
 
