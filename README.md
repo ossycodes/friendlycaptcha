@@ -64,9 +64,13 @@ Once that's done, you can call the `renderWidget()` method  in `<form>` to outpu
 
     {!! FriendlyCaptcha::renderWidget() !!}
 
-    or
+    or with custom theme
 
     {!! FriendlyCaptcha::renderWidget(['dark-theme' => true]) !!}
+
+    or with custom language
+
+    {!! FriendlyCaptcha::renderWidget(['data-lang' => en]) !!}
 
     <button>
         Submit
