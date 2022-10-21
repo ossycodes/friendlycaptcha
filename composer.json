@@ -1,0 +1,55 @@
+{
+    "name": "ossycodes/friendlycaptcha",
+    "description": ":package_description",
+    "keywords": [
+        "friendlycaptcha",
+        "captcha",
+        "laravel"
+    ],
+    "homepage": "https://github.com/:vendor/:package_name",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "ossycodes",
+            "email": "osaigbovoemmanuel1@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0|^9.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0|^7.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ossycodes\\FriendlyCaptcha\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ossycodes\\FriendlyCaptcha\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ossycodes\\FriendlyCaptcha\\FriendlyCaptchaServiceProvider"
+            ],
+            "aliases": {
+                "FriendlyCaptcha": "Ossycodes\\FriendlyCaptcha\\Facades\\FriendlyCaptcha"
+            }
+        }
+    }
+}
