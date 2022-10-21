@@ -67,9 +67,9 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
 
         $this->app->singleton('FriendlyCaptcha', function ($app) {
             return new FriendlyCaptcha(
-                $app['config']['FriendlyCaptcha.secret'],
-                $app['config']['FriendlyCaptcha.sitekey'],
-                $app['config']['FriendlyCaptcha.options']
+                $app['config']['friendlycaptcha.secret'],
+                $app['config']['friendlycaptcha.sitekey'],
+                $app['config']['friendlycaptcha.options']
             );
         });
 
