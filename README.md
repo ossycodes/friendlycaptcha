@@ -86,7 +86,7 @@ use Illuminate\Validation\Rule;
 public function submit(Request $request)
 {
     $request->validate([
-        'frc-captcha-solution' => ['required', Rule::turnstile()],
+        'frc-captcha-solution' => ['required', Rule::friendlycaptcha()],
     ]);
 }
 ```
