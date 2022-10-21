@@ -2,6 +2,7 @@
 
 namespace Ossycodes\FriendlyCaptcha;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Ossycodes\FriendlyCaptcha\FriendlyCaptcha;
@@ -25,6 +26,8 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
         }
 
         $this->bootBladeDirectives();
+
+        $this->bootMacro();
     }
 
     /**
@@ -39,6 +42,9 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * Boot blade directives
+     */
     public function bootBladeDirectives()
     {
         Blade::directive('friendlyCaptchaRenderWidgetScripts', function ($option) {
@@ -55,6 +61,16 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
                     <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
                     <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.min.js" async defer></script>
                 EOF;
+        });
+    }
+
+    /**
+     * boot macro
+     */
+    public function bootMacro()
+    {
+        Rule::macro('turnstile', function () {
+            return app(Turnstile::class);
         });
     }
 
