@@ -70,7 +70,7 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
     public function bootMacro()
     {
         Rule::macro('friendlycaptcha', function () {
-            return app(FriendlyCaptcha::class);
+            return app(\Ossycodes\FriendlyCaptcha\Rules\FriendlyCaptcha::class);
         });
     }
 
