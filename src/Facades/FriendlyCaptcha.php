@@ -13,6 +13,6 @@ class FriendlyCaptcha extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return ':package_name';
+        return 'FriendlyCaptcha';
     }
 }
