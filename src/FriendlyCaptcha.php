@@ -33,4 +33,19 @@ class FriendlyCaptcha
         $this->sitekey  = $sitekey;
         $this->http     = new Client($options);
     }
+
+    public function renderWidgetScripts($option = 'unpkg')
+    {
+        if ($option == 'unpkg') {
+            return <<<EOF
+                <script type="module" src="https://unpkg.com/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
+                <script nomodule src="https://unpkg.com/friendly-challenge@0.9.8/widget.min.js" async defer></script>
+              EOF;
+        }
+
+        return <<<EOF
+                <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
+                <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.min.js" async defer></script>
+            EOF;
+    }
 }
