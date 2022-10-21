@@ -70,7 +70,7 @@ Once that's done, you can call the `renderWidget()` method  in `<form>` to outpu
 
     or with custom language
 
-    {!! FriendlyCaptcha::renderWidget(['data-lang' => en]) !!}
+    {!! FriendlyCaptcha::renderWidget(['data-lang' => 'en']) !!}
 
     <button>
         Submit
