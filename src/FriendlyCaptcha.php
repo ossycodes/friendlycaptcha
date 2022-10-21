@@ -6,17 +6,20 @@ use GuzzleHttp\Client;
 
 class FriendlyCaptcha
 {
+    /**
+     * FriendlyCaptcha Verification URL
+     */
     const VERIFY_API =  'https://api.friendlycaptcha.com/api/v1/siteverify';
 
     /**
-     * The FriendlyCaptcha secret
+     * FriendlyCaptcha secret
      *
      * @var string
      */
     protected $secret;
 
     /**
-     * The FriendlyCaptch sitekey
+     * FriendlyCaptcha sitekey
      *
      * @var string
      */
