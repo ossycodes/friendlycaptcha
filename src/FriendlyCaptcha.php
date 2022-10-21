@@ -2,6 +2,8 @@
 
 namespace Ossycodes\FriendlyCaptcha;
 
+use GuzzleHttp\Client;
+
 class FriendlyCaptcha
 {
     const VERIFY_API =  'https://api.friendlycaptcha.com/api/v1/siteverify';
