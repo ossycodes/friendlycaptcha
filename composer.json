@@ -1,6 +1,6 @@
 {
     "name": "ossycodes/friendlycaptcha",
-    "description": ":package_description",
+    "description": "A simple package to help integrate FriendlyCaptcha in your Laravel applications.",
     "keywords": [
         "friendlycaptcha",
         "captcha",
