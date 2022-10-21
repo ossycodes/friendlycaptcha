@@ -32,12 +32,10 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
      */
     protected function bootConfig()
     {
-        $path = __DIR__ . '/config/config.php';
-
-        $this->mergeConfigFrom($path, 'FriendlyCaptcha');
+        $path = __DIR__ . '/config/friendlycaptcha.php';
 
         if (function_exists('config_path')) {
-            $this->publishes([$path => config_path('FriendlyCaptcha.php')]);
+            $this->publishes([$path => config_path('friendlycaptcha.php')]);
         }
     }
 
@@ -63,6 +61,10 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $path = __DIR__ . '/config/friendlycaptcha.php';
+
+        $this->mergeConfigFrom($path, 'friendlycaptcha');
+
         $this->app->singleton('FriendlyCaptcha', function ($app) {
             return new FriendlyCaptcha(
                 $app['config']['FriendlyCaptcha.secret'],
