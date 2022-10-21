@@ -9,7 +9,7 @@ class FriendlyCaptcha
     /**
      * FriendlyCaptcha Verification URL
      */
-    const VERIFY_API =  'https://api.friendlycaptcha.com/api/v1/siteverify';
+    const VERIFICATION_API_ENDPOINT =  'https://api.friendlycaptcha.com/api/v1/siteverify';
 
     /**
      * FriendlyCaptcha secret
@@ -24,6 +24,15 @@ class FriendlyCaptcha
      * @var string
      */
     protected $sitekey;
+
+    /**
+     * error messages
+     *
+     * @var array
+     */
+    protected $error = [];
+
+    public $isSuccess = false;
 
     /**
      * @var \GuzzleHttp\Client
@@ -96,5 +105,76 @@ class FriendlyCaptcha
         }
 
         return count($html) ? ' ' . implode(' ', $html) : '';
+    }
+
+    /**
+     * Verify FriendlyCaptcha response.
+     *
+     * @param string $solution
+     *
+     * @return bool
+     */
+    public function verifyRequest($solution)
+    {
+        return $this->verifyResponse(
+            $solution,
+        );
+    }
+
+    /**
+     * Verify FriendlyCaptcha response.
+     *
+     * @param string $solution
+     *
+     * @return self
+     */
+    public function verifyResponse($solution)
+    {
+        if (empty($solution)) {
+            return false;
+        }
+
+        $verifyResponse = $this->sendRequestVerify([
+            'solution' => $solution,
+            'secret'   => $this->secret,
+            'sitekey'  => $this->sitekey,
+        ]);
+
+        if (isset($verifyResponse['success']) && $verifyResponse['success'] === true) {
+            $this->isSuccess = true;
+            return $this;
+        }
+
+        $this->errors  = $verifyResponse['errors'];
+        $this->isSuccess = false;
+
+        return $this;
+
+    }
+
+    /**
+     * Send verify request.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function sendRequestVerify(array $data = [])
+    {
+        $response = $this->http->request('POST', static::VERIFICATION_API_ENDPOINT, [
+            'form_params' => $data,
+        ]);
+
+        return json_decode($response->getBody(), true);
+    }
+
+    public function isSuccess()
+    {
+        return $this->isSuccess;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }
