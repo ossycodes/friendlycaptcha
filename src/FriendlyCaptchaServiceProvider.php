@@ -41,18 +41,20 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
 
     public function bootBladeDirectives()
     {
-        Blade::directive('friendlyCaptchaWidgetScriptsUnpkg', function () {
-            return <<<EOF
-                <script type="module" src="https://unpkg.com/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
-                <script nomodule src="https://unpkg.com/friendly-challenge@0.9.8/widget.min.js" async defer></script>
-            EOF;
-        });
+        Blade::directive('friendlyCaptchaRenderWidgetScripts', function ($option) {
+            $option = trim($option, "'");
 
-        Blade::directive('friendlyCaptchaWidgetScriptsJsdelivr', function () {
+            if (empty($option) || $option == 'unpkg') {
+                return <<<EOF
+                        <script type="module" src="https://unpkg.com/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
+                        <script nomodule src="https://unpkg.com/friendly-challenge@0.9.8/widget.min.js" async defer></script>
+                    EOF;
+            }
+
             return <<<EOF
-                <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
-                <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.min.js" async defer></script>
-            EOF;
+                    <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
+                    <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.min.js" async defer></script>
+                EOF;
         });
     }
 
