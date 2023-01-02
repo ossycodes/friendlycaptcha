@@ -7,11 +7,6 @@ use GuzzleHttp\Client;
 class FriendlyCaptcha
 {
     /**
-     * FriendlyCaptcha Verification URL
-     */
-    const VERIFICATION_API_ENDPOINT =  'https://api.friendlycaptcha.com/api/v1/siteverify';
-
-    /**
      * FriendlyCaptcha secret
      *
      * @var string
@@ -39,10 +34,12 @@ class FriendlyCaptcha
      */
     protected $http;
 
-    public function __construct($secret, $sitekey, $options = [])
+    public function __construct($secret, $sitekey, $puzzle, $verify, $options = [])
     {
         $this->secret   = $secret;
         $this->sitekey  = $sitekey;
+        $this->puzzle  = $puzzle;
+        $this->verify  = $verify;
         $this->http     = new Client($options);
     }
 
@@ -50,14 +47,14 @@ class FriendlyCaptcha
     {
         if ($option == 'unpkg') {
             return <<<EOF
-                <script type="module" src="https://unpkg.com/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
-                <script nomodule src="https://unpkg.com/friendly-challenge@0.9.8/widget.min.js" async defer></script>
+                <script type="module" src="https://unpkg.com/friendly-challenge@0.9.9/widget.module.min.js" async defer></script>
+                <script nomodule src="https://unpkg.com/friendly-challenge@0.9.9/widget.min.js" async defer></script>
               EOF;
         }
 
         return <<<EOF
-                <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
-                <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.min.js" async defer></script>
+                <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.9/widget.module.min.js" async defer></script>
+                <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.9/widget.min.js" async defer></script>
             EOF;
     }
 
@@ -76,6 +73,8 @@ class FriendlyCaptcha
      */
     protected function prepareAttributes(array $attributes)
     {
+        $attributes['data-puzzle-endpoint'] = $this->puzzle;
+
         $attributes['data-sitekey'] = $this->sitekey;
 
         if (isset($attributes['dark-theme'])) {
@@ -85,6 +84,12 @@ class FriendlyCaptcha
         }
 
         $attributes['class'] = trim('frc-captcha');
+
+        $locale = \App::currentLocale();
+        if (in_array($locale, ["en", "fr", "de", "it", "nl", "pt", "es", "ca", "da", "ja", "ru", "sv", "el", "uk", "bg", "cs", "sk", "no", "fi", "lt", "lt", "pl", "et", "hr", "sr", "sl", "hu", "ro", "zh", "zh_TW", "vi"])) {
+            //use supported locale - https://docs.friendlycaptcha.com/#/widget_api?id=data-lang-attribute
+            $attributes['data-lang'] = $locale;
+        }
 
         return $attributes;
     }
@@ -145,7 +150,14 @@ class FriendlyCaptcha
             return $this;
         }
 
-        $this->errors  = $verifyResponse['errors'];
+        if (isset($verifyResponse['errors'])) {
+            $this->errors  = $verifyResponse['errors'];
+        }
+
+        if (isset($verifyResponse['error'])) {
+            $this->errors  = [$verifyResponse['error']];
+        }
+        
         $this->isSuccess = false;
 
         return $this;
@@ -161,7 +173,9 @@ class FriendlyCaptcha
      */
     protected function sendRequestVerify(array $data = [])
     {
-        $response = $this->http->request('POST', static::VERIFICATION_API_ENDPOINT, [
+        //dd($data);
+
+        $response = $this->http->request('POST', $this->verify, [
             'form_params' => $data,
         ]);
 

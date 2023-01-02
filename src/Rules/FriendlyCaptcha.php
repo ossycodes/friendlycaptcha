@@ -46,25 +46,25 @@ class FriendlyCaptcha implements Rule
     {
         switch ($code) {
             case "secret_missing":
-                return "You forgot to add the secret (=API key) parameter.";
+                return __('validation.secret_missing');
                 break;
             case "secret_invalid":
-                return "The API key you provided was invalid.";
+                return __('validation.secret_invalid');
                 break;
             case "solution_missing":
-                return "You forgot to add the solution parameter.";
+                return __('validation.solution_missing');
                 break;
             case "bad_request":
-                return "Something else is wrong with your request, e.g. your request body is empty.";
+                return __('validation.bad_request');
                 break;
             case "solution_invalid":
-                return "The solution you provided was invalid (perhaps the user tried to tamper with the puzzle).";
+                return __('validation.solution_invalid');
                 break;
             case "solution_timeout_or_duplicate":
-                return "The puzzle that the solution was for has expired or has already been used.";
+                return __('validation.solution_timeout_or_duplicate');
                 break;
             default:
-                return  "An unexpected error occurred.";
+                return  __('validation.unexpected');
         }
     }
 }
