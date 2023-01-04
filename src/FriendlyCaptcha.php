@@ -173,8 +173,6 @@ class FriendlyCaptcha
      */
     protected function sendRequestVerify(array $data = [])
     {
-        //dd($data);
-
         $response = $this->http->request('POST', $this->verify, [
             'form_params' => $data,
         ]);
