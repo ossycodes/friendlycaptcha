@@ -22,7 +22,7 @@ class FriendlyCaptchaTest extends TestCase
     {
         parent::setUp();
 
-        $this->captcha = new FriendlyCaptcha('{secret-key}', '{site-key}', 'https://api.friendlycaptcha.com/api/v1/siteverify', 'https://api.friendlycaptcha.com/api/v1/siteverify');
+        $this->captcha = new FriendlyCaptcha('{secret-key}', '{site-key}', 'https://api.friendlycaptcha.com/api/v1/puzzle', 'https://api.friendlycaptcha.com/api/v1/siteverify');
     }
 
     /**
@@ -60,8 +60,8 @@ class FriendlyCaptchaTest extends TestCase
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 
-        $expectedWidget = '<div data-puzzle-endpoint="https://api.friendlycaptcha.com/api/v1/siteverify" data-sitekey="{site-key}" class="frc-captcha" data-lang="en"></div>';
-        $expectedWidgetWithCustomAttributes = '<div data-puzzle-endpoint="https://api.friendlycaptcha.com/api/v1/siteverify" data-sitekey="{site-key}" class="frc-captcha dark"></div>';
+        $expectedWidget = '<div data-puzzle-endpoint="https://api.friendlycaptcha.com/api/v1/puzzle" data-sitekey="{site-key}" class="frc-captcha" data-lang="en"></div>';
+        $expectedWidgetWithCustomAttributes = '<div data-puzzle-endpoint="https://api.friendlycaptcha.com/api/v1/puzzle" data-sitekey="{site-key}" class="frc-captcha dark"></div>';
 
         $this->assertEquals($expectedWidget, $this->captcha->renderWidget());
         $this->assertEquals($expectedWidgetWithCustomAttributes, $this->captcha->renderWidget(['dark-theme' => true]));
