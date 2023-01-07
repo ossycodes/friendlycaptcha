@@ -142,6 +142,7 @@ If you discover any security related issues, please email osaigbovoemmanuel1@gma
 ## Credits
 
 -   [Osaigbovo Emmanuel](https://github.com/ossycodes)
+-   [Julian Dorn](https://github.com/wi-wissen)
 -   [All Contributors](../../contributors)
 
 ## License

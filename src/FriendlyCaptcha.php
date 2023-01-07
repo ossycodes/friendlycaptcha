@@ -21,6 +21,16 @@ class FriendlyCaptcha
     protected $sitekey;
 
     /**
+     * FriendlyCaptcha Puzzle endpoint
+     */
+    protected $puzzle;
+
+    /**
+     * FriendlyCaptcha verify endpoint
+     */
+    protected $verify;
+
+    /**
      * error messages
      *
      * @var array
@@ -38,8 +48,8 @@ class FriendlyCaptcha
     {
         $this->secret   = $secret;
         $this->sitekey  = $sitekey;
-        $this->puzzle  = $puzzle;
-        $this->verify  = $verify;
+        $this->puzzle   = $puzzle;
+        $this->verify   = $verify;
         $this->http     = new Client($options);
     }
 
@@ -157,7 +167,7 @@ class FriendlyCaptcha
         if (isset($verifyResponse['error'])) {
             $this->errors  = [$verifyResponse['error']];
         }
-        
+
         $this->isSuccess = false;
 
         return $this;
