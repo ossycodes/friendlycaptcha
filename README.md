@@ -16,18 +16,20 @@ composer require ossycodes/friendlycaptcha
 
 ### Configuration
 
-Add `FRIENDLY_CAPTCHA_SECRET` and `FRIENDLY_CAPTCHA_SITEKEY` in **.env** file :
+Add `FRIENDLY_CAPTCHA_SECRET`, `FRIENDLY_CAPTCHA_SITEKEY` and optional `FRIENDLY_CAPTCHA_PUZZLE_ENDPOINT`, `FRIENDLY_CAPTCHA_VERIFY_ENDPOINT` in **.env** file :
 
 ```
 FRIENDLY_CAPTCHA_SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 FRIENDLY_CAPTCHA_SITEKEY=XXXXXXXXXXXXXXXX
+FRIENDLY_CAPTCHA_PUZZLE_ENDPOINT=https://api.friendlycaptcha.com/api/v1/puzzle #optional
+FRIENDLY_CAPTCHA_VERIFY_ENDPOINT=https://api.friendlycaptcha.com/api/v1/siteverify #optional
 ```
 
 You can obtain your site-key from [here](https://docs.friendlycaptcha.com/#/installation?id=_1-generating-a-sitekey) and secret from [here](https://apiserver-prod.friendlycaptcha.eu/dashboard/accounts/1118678876/apikeys)
 
 ## Usage
 
-In your layout file, include the FriendlyCaptcha widget scripts using the `@friendlyCaptchaRenderWidgetScripts` Blade directive. This should be added to the `<head>` of your document.
+For FriendlyCaptcha widget scripts from a CDN, add the Blade directive `@friendlyCaptchaRenderWidgetScripts` in your layout file. This should be added to the `<head>` of your document.
 
 ```blade
 <html>
@@ -48,13 +50,25 @@ or if you don't want to use the Blade directive you can do this instead
 
 You have two options on how to add the script tag either from unpkg (default) or from jsdelivr
 
-@friendlyCaptchaRenderWidgetScripts()
+`@friendlyCaptchaRenderWidgetScripts()`
 or
-@friendlyCaptchaRenderWidgetScripts('jsdelivr')
+`@friendlyCaptchaRenderWidgetScripts('jsdelivr')`
 
-{!! FriendlyCaptcha::renderWidgetScripts() !!}
+`{!! FriendlyCaptcha::renderWidgetScripts() !!}`
 or
-{!! FriendlyCaptcha::renderWidgetScripts('jsdelivr') !!}
+`{!! FriendlyCaptcha::renderWidgetScripts('jsdelivr') !!}`
+
+You can also host the FriendlyCaptcha widget scripts yourself:
+
+```
+npm install --save friendly-challenge@0.9.9
+```
+
+And import it in your app:
+
+```js
+import "friendly-challenge/widget";
+```
 
 
 Once that's done, you can call the `renderWidget()` method  in `<form>` to output the appropriate markup (friendlycaptcha widget) with your site key configured.

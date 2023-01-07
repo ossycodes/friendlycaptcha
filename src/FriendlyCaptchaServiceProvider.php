@@ -28,6 +28,8 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
         $this->bootBladeDirectives();
 
         $this->bootMacro();
+
+        $this->bootLang();
     }
 
     /**
@@ -75,6 +77,16 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
     }
 
     /**
+     * boot lang
+     */
+    public function bootLang()
+    {
+        Rule::macro('friendlycaptcha', function () {
+            $this->loadTranslationsFrom(__DIR__.'/../lang', 'friendlycaptcha');
+        });
+    }
+
+    /**
      * Register the application services.
      */
     public function register()
@@ -87,6 +99,8 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
             return new FriendlyCaptcha(
                 $app['config']['friendlycaptcha.secret'],
                 $app['config']['friendlycaptcha.sitekey'],
+                $app['config']['friendlycaptcha.puzzle_endpoint'],
+                $app['config']['friendlycaptcha.verify_endpoint'],
                 $app['config']['friendlycaptcha.options']
             );
         });
