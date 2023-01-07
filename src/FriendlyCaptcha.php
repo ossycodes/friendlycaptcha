@@ -95,7 +95,8 @@ class FriendlyCaptcha
 
         $attributes['class'] = trim('frc-captcha');
 
-        $locale = \App::currentLocale();
+        $locale = app()->getLocale();
+
         if (in_array($locale, ["en", "fr", "de", "it", "nl", "pt", "es", "ca", "da", "ja", "ru", "sv", "el", "uk", "bg", "cs", "sk", "no", "fi", "lt", "lt", "pl", "et", "hr", "sr", "sl", "hu", "ro", "zh", "zh_TW", "vi"])) {
             //use supported locale - https://docs.friendlycaptcha.com/#/widget_api?id=data-lang-attribute
             $attributes['data-lang'] = $locale;
