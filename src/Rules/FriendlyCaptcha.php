@@ -45,24 +45,20 @@ class FriendlyCaptcha implements Rule
     protected function mapErrorCodeToMessage(string $code): string
     {
         switch ($code) {
-            case "secret_missing":
-                return __('validation.secret_missing');
-                break;
-            case "secret_invalid":
-                return __('validation.secret_invalid');
-                break;
-            case "solution_missing":
-                return __('validation.solution_missing');
-                break;
-            case "bad_request":
-                return __('validation.bad_request');
-                break;
-            case "solution_invalid":
-                return __('validation.solution_invalid');
-                break;
-            case "solution_timeout_or_duplicate":
-                return __('validation.solution_timeout_or_duplicate');
-                break;
+            case "auth_required":
+                return __('validation.auth_required');
+            case "auth_invalid":
+                return __('validation.auth_invalid');
+            case "sitekey_invalid":
+                return __('validation.sitekey_invalid');
+            case "response_missing":
+                return __('validation.response_missing');
+            case "response_invalid":
+                return __('validation.response_invalid');
+            case "response_timeout":
+                return __('validation.response_timeout');
+            case "response_duplicate":
+                return __('validation.response_duplicate');
             default:
                 return  __('validation.unexpected');
         }

@@ -7,12 +7,13 @@
 */
 
 return [
-    'secret_missing' => 'You forgot to add the secret (=API key) parameter.',
-    'secret_invalid' => 'The API key you provided was invalid.',
-    'solution_missing' => 'You forgot to add the secret (=API key) parameter.',
-    'secret_missing' => 'You forgot to add the solution parameter.',
     'bad_request' => 'Something else is wrong with your request, e.g. your request body is empty.',
-    'solution_invalid' => 'The solution you provided was invalid (perhaps the user tried to tamper with the puzzle).',
-    'solution_timeout_or_duplicate' => 'The puzzle that the solution was for has expired or has already been used.',
+    'auth_required' => 'Authentification required.',
+    'auth_invalid' => 'Authentification failed.',
+    'sitekey_invalid' => 'The sitekey is invalid.',
+    'response_missing' => 'The captcha solution is missing.',
+    'response_invalid' => 'The captcha solution is invalid.',
+    'response_timeout' => 'Connection timed out.',
+    'response_duplicate' => 'This solution has already been used.',
     'unexpected' => 'An unexpected error occurred.'
 ];
