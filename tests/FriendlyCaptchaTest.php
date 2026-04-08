@@ -22,21 +22,7 @@ class FriendlyCaptchaTest extends TestCase
     {
         parent::setUp();
 
-        $this->captcha = new FriendlyCaptcha('{secret-key}', '{site-key}', 'https://api.friendlycaptcha.com/api/v1/puzzle', 'https://api.friendlycaptcha.com/api/v1/siteverify');
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_render_unpkg_widget_script_correctly()
-    {
-        $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
-
-        $expectedScriptOne  = '<script type="module" src="https://unpkg.com/friendly-challenge@0.9.9/widget.module.min.js" async defer></script>';
-        $expectedScriptTwo  = '<script nomodule src="https://unpkg.com/friendly-challenge@0.9.9/widget.min.js" async defer></script>';
-
-        $this->assertStringContainsString($expectedScriptOne, $this->captcha->renderWidgetScripts());
-        $this->assertStringContainsString($expectedScriptTwo, $this->captcha->renderWidgetScripts());
+        $this->captcha = new FriendlyCaptcha('{secret-key}', '{site-key}', 'https://global.frcapi.com/api/v2/captcha/siteverify');
     }
 
     /**
@@ -46,11 +32,11 @@ class FriendlyCaptchaTest extends TestCase
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 
-        $expectedScriptOne = '<script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.9/widget.module.min.js" async defer></script>';
-        $expectedScriptTwo = '<script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.9/widget.min.js" async defer></script>';
+        $expectedScriptOne = '<script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.min.js" async defer></script>';
+        $expectedScriptTwo = '<script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.compat.min.js" async defer></script>';
 
-        $this->assertStringContainsString($expectedScriptOne, $this->captcha->renderWidgetScripts('jsdelivr'));
-        $this->assertStringContainsString($expectedScriptTwo, $this->captcha->renderWidgetScripts('jsdelivr'));
+        $this->assertStringContainsString($expectedScriptOne, $this->captcha->renderWidgetScripts());
+        $this->assertStringContainsString($expectedScriptTwo, $this->captcha->renderWidgetScripts());
     }
 
     /**
@@ -60,8 +46,8 @@ class FriendlyCaptchaTest extends TestCase
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 
-        $expectedWidget = '<div data-puzzle-endpoint="https://api.friendlycaptcha.com/api/v1/puzzle" data-sitekey="{site-key}" class="frc-captcha" data-lang="en"></div>';
-        $expectedWidgetWithCustomAttributes = '<div data-puzzle-endpoint="https://api.friendlycaptcha.com/api/v1/puzzle" data-sitekey="{site-key}" class="frc-captcha dark"></div>';
+        $expectedWidget = '<div data-sitekey="{site-key}" class="frc-captcha" data-lang="en"></div>';
+        $expectedWidgetWithCustomAttributes = '<div data-sitekey="{site-key}" class="frc-captcha dark"></div>';
 
         $this->assertEquals($expectedWidget, $this->captcha->renderWidget());
         $this->assertEquals($expectedWidgetWithCustomAttributes, $this->captcha->renderWidget(['dark-theme' => true]));

@@ -3,6 +3,7 @@
 namespace Ossycodes\FriendlyCaptcha;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class FriendlyCaptcha
 {
@@ -21,11 +22,6 @@ class FriendlyCaptcha
     protected $sitekey;
 
     /**
-     * FriendlyCaptcha Puzzle endpoint
-     */
-    protected $puzzle;
-
-    /**
      * FriendlyCaptcha verify endpoint
      */
     protected $verify;
@@ -40,31 +36,23 @@ class FriendlyCaptcha
     public $isSuccess = false;
 
     /**
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
     protected $http;
 
-    public function __construct($secret, $sitekey, $puzzle, $verify, $options = [])
+    public function __construct($secret, $sitekey, $verify, $options = [])
     {
         $this->secret   = $secret;
         $this->sitekey  = $sitekey;
-        $this->puzzle   = $puzzle;
         $this->verify   = $verify;
         $this->http     = new Client($options);
     }
 
-    public function renderWidgetScripts($option = 'unpkg')
+    public function renderWidgetScripts(): string
     {
-        if ($option == 'unpkg') {
-            return <<<EOF
-                <script type="module" src="https://unpkg.com/friendly-challenge@0.9.9/widget.module.min.js" async defer></script>
-                <script nomodule src="https://unpkg.com/friendly-challenge@0.9.9/widget.min.js" async defer></script>
-              EOF;
-        }
-
         return <<<EOF
-                <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.9/widget.module.min.js" async defer></script>
-                <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.9/widget.min.js" async defer></script>
+                <script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.min.js" async defer></script>
+                <script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.compat.min.js" async defer></script>
             EOF;
     }
 
@@ -83,8 +71,6 @@ class FriendlyCaptcha
      */
     protected function prepareAttributes(array $attributes)
     {
-        $attributes['data-puzzle-endpoint'] = $this->puzzle;
-
         $attributes['data-sitekey'] = $this->sitekey;
 
         if (isset($attributes['dark-theme'])) {
@@ -129,8 +115,9 @@ class FriendlyCaptcha
      * @param string $solution
      *
      * @return bool
+     * @throws GuzzleException
      */
-    public function verifyRequest($solution)
+    public function verifyRequest(string $solution)
     {
         return $this->verifyResponse(
             $solution,
@@ -143,18 +130,21 @@ class FriendlyCaptcha
      * @param string $solution
      *
      * @return self
+     * @throws GuzzleException
      */
-    public function verifyResponse($solution)
+    public function verifyResponse(string $solution)
     {
         if (empty($solution)) {
             return false;
         }
 
-        $verifyResponse = $this->sendRequestVerify([
-            'solution' => $solution,
-            'secret'   => $this->secret,
-            'sitekey'  => $this->sitekey,
-        ]);
+        $verifyResponse = $this->sendRequestVerify(
+            ['X-API-Key' => $this->secret],
+            [
+                'response' => $solution,
+                'sitekey'  => $this->sitekey,
+            ]
+        );
 
         if (isset($verifyResponse['success']) && $verifyResponse['success'] === true) {
             $this->isSuccess = true;
@@ -178,13 +168,15 @@ class FriendlyCaptcha
     /**
      * Send verify request.
      *
+     * @param array $headers
      * @param array $data
-     *
      * @return array
+     * @throws GuzzleException
      */
-    protected function sendRequestVerify(array $data = [])
+    protected function sendRequestVerify(array $headers = [], array $data = []): array
     {
         $response = $this->http->request('POST', $this->verify, [
+            'headers' => $headers,
             'form_params' => $data,
         ]);
 
