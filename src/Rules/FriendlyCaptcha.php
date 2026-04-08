@@ -59,6 +59,8 @@ class FriendlyCaptcha implements Rule
                 return __('validation.response_timeout');
             case "response_duplicate":
                 return __('validation.response_duplicate');
+            case "bad_request":
+                return __('validation.bad_request');
             default:
                 return  __('validation.unexpected');
         }

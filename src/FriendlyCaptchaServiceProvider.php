@@ -90,7 +90,6 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
             return new FriendlyCaptcha(
                 $app['config']['friendlycaptcha.secret'],
                 $app['config']['friendlycaptcha.sitekey'],
-                $app['config']['friendlycaptcha.puzzle_endpoint'],
                 $app['config']['friendlycaptcha.verify_endpoint'],
                 $app['config']['friendlycaptcha.options']
             );

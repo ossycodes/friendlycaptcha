@@ -3,6 +3,7 @@
 namespace Ossycodes\FriendlyCaptcha;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class FriendlyCaptcha
 {
@@ -35,7 +36,7 @@ class FriendlyCaptcha
     public $isSuccess = false;
 
     /**
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
     protected $http;
 
@@ -114,6 +115,7 @@ class FriendlyCaptcha
      * @param string $solution
      *
      * @return bool
+     * @throws GuzzleException
      */
     public function verifyRequest(string $solution)
     {
@@ -128,6 +130,7 @@ class FriendlyCaptcha
      * @param string $solution
      *
      * @return self
+     * @throws GuzzleException
      */
     public function verifyResponse(string $solution)
     {
@@ -168,6 +171,7 @@ class FriendlyCaptcha
      * @param array $headers
      * @param array $data
      * @return array
+     * @throws GuzzleException
      */
     protected function sendRequestVerify(array $headers = [], array $data = []): array
     {
