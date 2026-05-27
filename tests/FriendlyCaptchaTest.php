@@ -25,10 +25,7 @@ class FriendlyCaptchaTest extends TestCase
         $this->captcha = new FriendlyCaptcha('{secret-key}', '{site-key}', 'https://api.friendlycaptcha.com/api/v1/puzzle', 'https://api.friendlycaptcha.com/api/v1/siteverify');
     }
 
-    /**
-     * @test
-     */
-    public function it_can_render_unpkg_widget_script_correctly()
+    public function test_it_can_render_unpkg_widget_script_correctly()
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 
@@ -39,10 +36,7 @@ class FriendlyCaptchaTest extends TestCase
         $this->assertStringContainsString($expectedScriptTwo, $this->captcha->renderWidgetScripts());
     }
 
-    /**
-     * @test
-     */
-    public function it_can_render_jsdelivr_widget_script_correctly()
+    public function test_it_can_render_jsdelivr_widget_script_correctly()
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 
@@ -53,10 +47,7 @@ class FriendlyCaptchaTest extends TestCase
         $this->assertStringContainsString($expectedScriptTwo, $this->captcha->renderWidgetScripts('jsdelivr'));
     }
 
-    /**
-     * @test
-     */
-    public function it_can_render_widget_correctly()
+    public function test_it_can_render_widget_correctly()
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 
