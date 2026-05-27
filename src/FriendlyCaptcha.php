@@ -31,7 +31,7 @@ class FriendlyCaptcha
      *
      * @var array
      */
-    protected $error = [];
+    protected $errors = [];
 
     public $isSuccess = false;
 
@@ -51,8 +51,8 @@ class FriendlyCaptcha
     public function renderWidgetScripts(): string
     {
         return <<<EOF
-                <script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.min.js" async defer></script>
-                <script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.compat.min.js" async defer></script>
+                <script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.min.js" async defer></script>
+                <script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.compat.min.js" async defer></script>
             EOF;
     }
 
@@ -132,10 +132,12 @@ class FriendlyCaptcha
      * @return self
      * @throws GuzzleException
      */
-    public function verifyResponse(string $solution)
+    public function verifyResponse(string $solution): self
     {
         if (empty($solution)) {
-            return false;
+            $this->isSuccess = false;
+            $this->errors = [];
+            return $this;
         }
 
         $verifyResponse = $this->sendRequestVerify(
@@ -177,7 +179,7 @@ class FriendlyCaptcha
     {
         $response = $this->http->request('POST', $this->verify, [
             'headers' => $headers,
-            'form_params' => $data,
+            'json' => $data,
         ]);
 
         return json_decode($response->getBody(), true);

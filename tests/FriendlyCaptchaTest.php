@@ -14,7 +14,7 @@ class FriendlyCaptchaTest extends TestCase
     }
 
     /**
-     * @var FriendlyCaptchaTest
+     * @var FriendlyCaptcha
      */
     private $captcha;
 
@@ -25,24 +25,18 @@ class FriendlyCaptchaTest extends TestCase
         $this->captcha = new FriendlyCaptcha('{secret-key}', '{site-key}', 'https://global.frcapi.com/api/v2/captcha/siteverify');
     }
 
-    /**
-     * @test
-     */
-    public function it_can_render_jsdelivr_widget_script_correctly()
+    public function test_it_can_render_widget_scripts_correctly()
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 
-        $expectedScriptOne = '<script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.min.js" async defer></script>';
-        $expectedScriptTwo = '<script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.compat.min.js" async defer></script>';
+        $expectedScriptOne = '<script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.min.js" async defer></script>';
+        $expectedScriptTwo = '<script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.compat.min.js" async defer></script>';
 
         $this->assertStringContainsString($expectedScriptOne, $this->captcha->renderWidgetScripts());
         $this->assertStringContainsString($expectedScriptTwo, $this->captcha->renderWidgetScripts());
     }
 
-    /**
-     * @test
-     */
-    public function it_can_render_widget_correctly()
+    public function test_it_can_render_widget_correctly()
     {
         $this->assertTrue($this->captcha instanceof FriendlyCaptcha);
 

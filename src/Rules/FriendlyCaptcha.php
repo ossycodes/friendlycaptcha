@@ -2,14 +2,13 @@
 
 namespace Ossycodes\FriendlyCaptcha\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Ossycodes\FriendlyCaptcha\FriendlyCaptcha as FriendlyCaptchaClient;
 
-class FriendlyCaptcha implements Rule
+class FriendlyCaptcha implements ValidationRule
 {
     protected $friendlyCaptchaClient;
-
-    protected array $messages = [];
 
     public function __construct(
         FriendlyCaptchaClient $friendlyCaptcha
@@ -17,52 +16,40 @@ class FriendlyCaptcha implements Rule
         $this->friendlyCaptchaClient = $friendlyCaptcha;
     }
 
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $response = $this->friendlyCaptchaClient->verifyResponse($value);
 
         if ($response->isSuccess()) {
-            return true;
+            return;
         }
 
         foreach ($response->getErrors() as $errorCode) {
-            $this->messages[] = $this->mapErrorCodeToMessage($errorCode);
+            $fail($this->mapErrorCodeToMessage($errorCode));
         }
-
-        return false;
     }
 
-    public function message()
-    {
-        return $this->messages;
-    }
-
-    /**
-     * map FriendlyCaptcha error code to human readable validation message
-     *
-     * @var string $code
-     */
     protected function mapErrorCodeToMessage(string $code): string
     {
         switch ($code) {
             case "auth_required":
-                return __('validation.auth_required');
+                return __('friendlycaptcha::validation.auth_required');
             case "auth_invalid":
-                return __('validation.auth_invalid');
+                return __('friendlycaptcha::validation.auth_invalid');
             case "sitekey_invalid":
-                return __('validation.sitekey_invalid');
+                return __('friendlycaptcha::validation.sitekey_invalid');
             case "response_missing":
-                return __('validation.response_missing');
+                return __('friendlycaptcha::validation.response_missing');
             case "response_invalid":
-                return __('validation.response_invalid');
+                return __('friendlycaptcha::validation.response_invalid');
             case "response_timeout":
-                return __('validation.response_timeout');
+                return __('friendlycaptcha::validation.response_timeout');
             case "response_duplicate":
-                return __('validation.response_duplicate');
+                return __('friendlycaptcha::validation.response_duplicate');
             case "bad_request":
-                return __('validation.bad_request');
+                return __('friendlycaptcha::validation.bad_request');
             default:
-                return  __('validation.unexpected');
+                return __('friendlycaptcha::validation.unexpected');
         }
     }
 }

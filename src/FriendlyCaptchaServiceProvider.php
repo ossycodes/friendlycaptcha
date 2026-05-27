@@ -25,11 +25,11 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
             $this->bootConfig();
         }
 
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'friendlycaptcha');
+
         $this->bootBladeDirectives();
 
         $this->bootMacro();
-
-        $this->bootLang();
     }
 
     /**
@@ -51,8 +51,8 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
     {
         Blade::directive('friendlyCaptchaRenderWidgetScripts', function () {
             return <<<EOF
-                    <script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.min.js" async defer></script>
-                    <script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.1.36/site.compat.min.js" async defer></script>
+                    <script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.min.js" async defer></script>
+                    <script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.compat.min.js" async defer></script>
                 EOF;
         });
     }
@@ -64,16 +64,6 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
     {
         Rule::macro('friendlycaptcha', function () {
             return app(\Ossycodes\FriendlyCaptcha\Rules\FriendlyCaptcha::class);
-        });
-    }
-
-    /**
-     * boot lang
-     */
-    public function bootLang()
-    {
-        Rule::macro('friendlycaptcha', function () {
-            $this->loadTranslationsFrom(__DIR__.'/../lang', 'friendlycaptcha');
         });
     }
 
