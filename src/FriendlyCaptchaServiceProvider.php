@@ -25,11 +25,11 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
             $this->bootConfig();
         }
 
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'friendlycaptcha');
+
         $this->bootBladeDirectives();
 
         $this->bootMacro();
-
-        $this->bootLang();
     }
 
     /**
@@ -49,19 +49,10 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
      */
     public function bootBladeDirectives()
     {
-        Blade::directive('friendlyCaptchaRenderWidgetScripts', function ($option) {
-            $option = trim($option, "'");
-
-            if (empty($option) || $option == 'unpkg') {
-                return <<<EOF
-                        <script type="module" src="https://unpkg.com/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
-                        <script nomodule src="https://unpkg.com/friendly-challenge@0.9.8/widget.min.js" async defer></script>
-                    EOF;
-            }
-
+        Blade::directive('friendlyCaptchaRenderWidgetScripts', function () {
             return <<<EOF
-                    <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.module.min.js" async defer></script>
-                    <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.min.js" async defer></script>
+                    <script type="module" src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.min.js" async defer></script>
+                    <script nomodule src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@0.2.0/site.compat.min.js" async defer></script>
                 EOF;
         });
     }
@@ -73,16 +64,6 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
     {
         Rule::macro('friendlycaptcha', function () {
             return app(\Ossycodes\FriendlyCaptcha\Rules\FriendlyCaptcha::class);
-        });
-    }
-
-    /**
-     * boot lang
-     */
-    public function bootLang()
-    {
-        Rule::macro('friendlycaptcha', function () {
-            $this->loadTranslationsFrom(__DIR__.'/../lang', 'friendlycaptcha');
         });
     }
 
@@ -99,7 +80,6 @@ class FriendlyCaptchaServiceProvider extends ServiceProvider
             return new FriendlyCaptcha(
                 $app['config']['friendlycaptcha.secret'],
                 $app['config']['friendlycaptcha.sitekey'],
-                $app['config']['friendlycaptcha.puzzle_endpoint'],
                 $app['config']['friendlycaptcha.verify_endpoint'],
                 $app['config']['friendlycaptcha.options']
             );
